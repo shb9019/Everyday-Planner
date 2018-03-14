@@ -28,7 +28,7 @@ export default class TasksLists extends React.Component<Props, State> {
 
     render() {
         return (
-            <ListGroupItem>
+            <ListGroupItem className="list-group-item">
                 <Row
                     onClick={() => {this.setState({toggle: !this.state.toggle}); }}
                 >
@@ -36,7 +36,10 @@ export default class TasksLists extends React.Component<Props, State> {
                         <Button
                             className="toggle-status-button"
                             bsStyle="link"
-                            onClick={() => this.props.changeCompletedStatus(!this.props.completed)}
+                            onClick={(e) => {
+                                this.props.changeCompletedStatus(!this.props.completed);
+                                e.stopPropagation();
+                            }}
                         >
                             {this.props.completed
                                 ? <FontAwesome className="fa fa-times"/>
@@ -49,7 +52,7 @@ export default class TasksLists extends React.Component<Props, State> {
                     </Col>
                 </Row>
                 {this.state.toggle
-                    ? <Row className="top-buffer">
+                    ? <Row className="task-description">
                         <Col xs={8} xsOffset={2} className={'text-center'}>
                             {this.props.description}
                         </Col>

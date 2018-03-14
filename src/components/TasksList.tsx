@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { ListGroup } from 'react-bootstrap';
 import TasksItem from './TasksItem';
+import AddTaskOption from './AddTaskOption';
 import { DateTime } from '../Interface';
 import DATA from '../data.js';
 
-export interface Props {}
+export interface Props {
+    openAddTaskModal: Function;
+}
 
 export interface TaskJson {
     id: number;
@@ -17,6 +20,7 @@ export interface TaskJson {
 
 export interface State {
     readonly data: Array<TaskJson>;
+    readonly addTaskModalActive: boolean;
 }
 
 export default class TasksLists extends React.Component<Props, State> {
@@ -24,7 +28,8 @@ export default class TasksLists extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-          data: DATA
+            data: DATA,
+            addTaskModalActive: false
         };
     }
 
@@ -32,9 +37,8 @@ export default class TasksLists extends React.Component<Props, State> {
         let data = this.state.data;
         data[id - 1].completed = completed;
         this.setState({
-           data: data
+            data: data
         });
-        console.log(this.state.data);
     }
 
     render() {
@@ -51,9 +55,12 @@ export default class TasksLists extends React.Component<Props, State> {
             );
         });
         return (
-            <ListGroup>
-                {taskItemList}
-            </ListGroup>
+            <div>
+                <AddTaskOption addTask={() => this.props.openAddTaskModal()}/>
+                <ListGroup>
+                    {taskItemList}
+                </ListGroup>
+            </div>
         );
     }
 }
