@@ -3,6 +3,7 @@ import SplitPane from 'react-split-pane';
 const { arrayMove } =  require('react-sortable-hoc');
 import TasksList from './TasksList';
 import AddTaskModal from './AddTaskModal';
+import TasksGantt from './TasksGantt';
 import { TaskJson } from '../Interface';
 import DATA from '../data.js';
 import '../css/Dashboard.css';
@@ -21,6 +22,18 @@ export default class Dashboard extends React.Component<Props, State> {
             data: DATA,
             addTaskModalActive: false
         };
+    }
+
+    componentDidMount() {
+        if (localStorage.getItem('data')) {
+            this.setState({
+                data: JSON.parse(localStorage.getItem('data') as string)
+            });
+        }
+    }
+
+    componentDidUpdate() {
+        localStorage.setItem('data', JSON.stringify(this.state.data));
     }
 
     getTaskIndex = (id: number) => {
@@ -111,7 +124,11 @@ export default class Dashboard extends React.Component<Props, State> {
                             removeTask={(id: number) => this.removeTask(id)}
                         />
                     </div>
-                    <div/>
+                    <div>
+                        <TasksGantt
+                            data={this.state.data}
+                        />
+                    </div>
                 </SplitPane>
                 {this.state.addTaskModalActive
                     ? <AddTaskModal

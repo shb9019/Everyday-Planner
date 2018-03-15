@@ -2,6 +2,7 @@ import * as React from 'react';
 const { SortableContainer, SortableElement } =  require('react-sortable-hoc');
 import TasksItem from './TasksItem';
 import AddTaskOption from './AddTaskOption';
+import TaskStats from './TaskStats';
 import { TaskJson } from '../Interface';
 
 const SortableItem = SortableElement(({value}: {value: HTMLElement}) => {
@@ -78,6 +79,9 @@ export default class TasksLists extends React.Component<Props, State> {
                     useDragHandle={true}
                     lockAxis={'y'}
                     onSortEnd={this.props.onSortEnd}
+                />
+                <TaskStats
+                    data={this.props.data}
                 />
             </div>
         );
