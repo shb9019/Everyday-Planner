@@ -4,6 +4,7 @@ import '../css/AddTaskModal.css';
 
 export interface Props {
     closeAddTaskModal: Function;
+    createTask: Function;
 }
 
 export interface State {
@@ -60,11 +61,11 @@ export default class AddTaskModal extends React.Component<Props, State> {
                             <ControlLabel>Start Time</ControlLabel>
                             <FormControl
                                 type="datetime-local"
-                                value={this.state.startTime.toISOString().slice(0, -1)}
                                 onChange={
-                                    (e) => this.setState(
-                                        { startTime: new Date((e.target as HTMLInputElement).value) }
-                                    )
+                                    (e) =>
+                                        this.setState(
+                                            { startTime: new Date((e.target as HTMLInputElement).value) }
+                                        )
                                 }
                             />
                         </FormGroup>
@@ -72,7 +73,6 @@ export default class AddTaskModal extends React.Component<Props, State> {
                             <ControlLabel>End Time</ControlLabel>
                             <FormControl
                                 type="datetime-local"
-                                value={this.state.endTime.toISOString().slice(0, -1)}
                                 onChange={
                                     (e) => this.setState(
                                         { endTime: new Date((e.target as HTMLInputElement).value) }
@@ -84,7 +84,20 @@ export default class AddTaskModal extends React.Component<Props, State> {
 
                     <Modal.Footer>
                         <Button onClick={() => this.props.closeAddTaskModal()}>Close</Button>
-                        <Button bsStyle="primary">Create Task</Button>
+                        <Button
+                            bsStyle="primary"
+                            onClick={() => {
+                                this.props.createTask(
+                                    this.state.name,
+                                    this.state.description,
+                                    this.state.startTime,
+                                    this.state.endTime
+                                );
+                                this.props.closeAddTaskModal();
+                            }}
+                        >
+                            Create Task
+                        </Button>
                     </Modal.Footer>
                 </Modal.Dialog>
             </div>

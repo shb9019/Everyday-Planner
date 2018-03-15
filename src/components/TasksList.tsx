@@ -8,6 +8,7 @@ export interface Props {
     data: Array<TaskJson>;
     openAddTaskModal: Function;
     changeCompletedStatus: Function;
+    removeTask: Function;
 }
 
 export interface State {
@@ -35,6 +36,7 @@ export default class TasksLists extends React.Component<Props, State> {
                     changeCompletedStatus={
                         (completed: boolean) => this.props.changeCompletedStatus(element.id, completed)
                     }
+                    removeTask={() => this.props.removeTask(element.id)}
                 />
             );
         });
