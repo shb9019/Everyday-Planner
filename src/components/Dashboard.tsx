@@ -1,5 +1,6 @@
 import * as React from 'react';
 import SplitPane from 'react-split-pane';
+const { arrayMove } =  require('react-sortable-hoc');
 import TasksList from './TasksList';
 import AddTaskModal from './AddTaskModal';
 import { TaskJson } from '../Interface';
@@ -37,6 +38,12 @@ export default class Dashboard extends React.Component<Props, State> {
         data[this.getTaskIndex((id))].completed = completed;
         this.setState({
             data: data
+        });
+    }
+
+    onSortEnd = ({oldIndex, newIndex}: {oldIndex: Array<number>, newIndex: Array<number>}) => {
+        this.setState({
+            data: arrayMove(this.state.data, oldIndex, newIndex),
         });
     }
 
@@ -92,6 +99,7 @@ export default class Dashboard extends React.Component<Props, State> {
                             changeCompletedStatus={
                                 (id: number, completed: boolean) => this.changeTaskCompletedStatus(id, completed)
                             }
+                            onSortEnd={this.onSortEnd}
                             editTask={(
                                 id: number,
                                 name: string,

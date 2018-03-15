@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { ListGroupItem, Row, Col, Button, FormControl } from 'react-bootstrap';
+import { Row, Col, Button, FormControl } from 'react-bootstrap';
+const { SortableHandle } = require('react-sortable-hoc');
 import '../css/TasksItem.css';
 import FontAwesome from 'react-fontawesome';
+
+const DragHandle = SortableHandle(() => <span className={'drag-handle'}>::</span>);
 
 export interface Props {
     id: number;
@@ -24,7 +27,7 @@ export interface State {
     endTime: Date;
 }
 
-export default class TasksLists extends React.Component<Props, State> {
+export default class TasksItem extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -43,16 +46,33 @@ export default class TasksLists extends React.Component<Props, State> {
         });
     }
 
+    componentWillReceiveProps(nextProps: Props) {
+        this.setState({
+            toggle: false,
+            edit: false,
+            name: nextProps.name,
+            description: nextProps.description,
+            startTime: nextProps.startTime,
+            endTime: nextProps.endTime
+        });
+    }
+
     render() {
         if (!this.state.edit) {
             return (
-                <ListGroupItem className="list-group-item">
+                <div
+                    className="list-group-item"
+                    style={this.props.completed ? {backgroundColor: '#98FB98'} : {backgroundColor: '#FA8072'}}
+                >
                     <Row
                         onClick={() => {
                             this.setState({toggle: !this.state.toggle});
                         }}
                     >
-                        <Col xs={2} md={2} lg={2}>
+                        <Col xs={1} md={1} lg={1}>
+                            <DragHandle/>
+                        </Col>
+                        <Col xs={1} md={1} lg={1}>
                             <Button
                                 className="toggle-status-button"
                                 bsStyle="link"
@@ -96,11 +116,11 @@ export default class TasksLists extends React.Component<Props, State> {
                             </Col>
                         </Row>
                         : null}
-                </ListGroupItem>
+                </div>
             );
         } else {
             return (
-                <ListGroupItem className="list-group-item">
+                <div className="list-group-item">
                     <Row>
                         <Col xs={2} md={2} lg={2}>
                             <Button
@@ -181,7 +201,7 @@ export default class TasksLists extends React.Component<Props, State> {
                             />
                         </Col>
                     </Row>
-                </ListGroupItem>
+                </div>
             );
         }
     }

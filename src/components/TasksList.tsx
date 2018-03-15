@@ -1,8 +1,26 @@
 import * as React from 'react';
-import { ListGroup } from 'react-bootstrap';
+const { SortableContainer, SortableElement } =  require('react-sortable-hoc');
 import TasksItem from './TasksItem';
 import AddTaskOption from './AddTaskOption';
 import { TaskJson } from '../Interface';
+
+const SortableItem = SortableElement(({value}: {value: HTMLElement}) => {
+    return (
+        <li style={{listStyle: 'none'}}>
+            {value}
+        </li>
+    );
+});
+
+const SortableList = SortableContainer(({items}: {items: Array<HTMLElement>}) => {
+    return (
+        <ul style={{padding: 0}}>
+            {items.map((value: HTMLElement, index: number) => (
+                <SortableItem key={`item-${index}`} index={index} value={value} />
+            ))}
+        </ul>
+    );
+});
 
 export interface Props {
     data: Array<TaskJson>;
@@ -10,6 +28,7 @@ export interface Props {
     changeCompletedStatus: Function;
     editTask: Function;
     removeTask: Function;
+    onSortEnd: Function;
 }
 
 export interface State {
@@ -54,9 +73,12 @@ export default class TasksLists extends React.Component<Props, State> {
         return (
             <div>
                 <AddTaskOption addTask={() => this.props.openAddTaskModal()}/>
-                <ListGroup>
-                    {taskItemList}
-                </ListGroup>
+                <SortableList
+                    items={taskItemList}
+                    useDragHandle={true}
+                    lockAxis={'y'}
+                    onSortEnd={this.props.onSortEnd}
+                />
             </div>
         );
     }

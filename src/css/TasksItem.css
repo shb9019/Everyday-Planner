@@ -3,6 +3,7 @@
 }
 
 .toggle-status-button {
+    color: black;
     position: absolute;
     transform: translateY(5%);
 }
@@ -28,4 +29,14 @@
 
 .edit-name-field {
     margin-top: 10px;
+}
+
+.drag-handle {
+    position: absolute;
+    transform: translateY(15%);
+    font-size: 20px;
+}
+
+.drag-handle:hover {
+    cursor: pointer;
 }

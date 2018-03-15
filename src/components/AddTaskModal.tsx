@@ -27,7 +27,7 @@ export default class AddTaskModal extends React.Component<Props, State> {
 
     render() {
         return (
-            <div className="static-modal">
+            <div className="static-modal" >
                 <Modal.Dialog>
                     <Modal.Header>
                         <Modal.Title>Add Task</Modal.Title>
