@@ -8,6 +8,7 @@ export interface Props {
     data: Array<TaskJson>;
     openAddTaskModal: Function;
     changeCompletedStatus: Function;
+    editTask: Function;
     removeTask: Function;
 }
 
@@ -35,6 +36,16 @@ export default class TasksLists extends React.Component<Props, State> {
                     completed={element.completed}
                     changeCompletedStatus={
                         (completed: boolean) => this.props.changeCompletedStatus(element.id, completed)
+                    }
+                    startTime={element.startTime}
+                    endTime={element.endTime}
+                    editTask={
+                        (
+                            name: string,
+                            description: string,
+                            startTime: Date,
+                            endTime: Date
+                        ) => this.props.editTask(element.id, name, description, element.completed, startTime, endTime)
                     }
                     removeTask={() => this.props.removeTask(element.id)}
                 />

@@ -54,6 +54,24 @@ export default class Dashboard extends React.Component<Props, State> {
         });
     }
 
+    editTask = (id: number, name: string, description: string, completed: boolean, startTime: Date, endTime: Date) => {
+        let task = {
+            id: id,
+            name: name,
+            description: description,
+            completed: completed,
+            startTime: startTime,
+            endTime: endTime
+        };
+
+        let editIndex = this.getTaskIndex(id);
+        let stateData = this.state.data;
+        stateData.splice(editIndex, 1, task);
+        this.setState({
+            data: stateData
+        });
+    }
+
     removeTask = (id: number) => {
         let deleteIndex = this.getTaskIndex(id);
         let stateData = this.state.data;
@@ -74,6 +92,14 @@ export default class Dashboard extends React.Component<Props, State> {
                             changeCompletedStatus={
                                 (id: number, completed: boolean) => this.changeTaskCompletedStatus(id, completed)
                             }
+                            editTask={(
+                                id: number,
+                                name: string,
+                                description: string,
+                                completed: boolean,
+                                startTime: Date,
+                                endTime: Date
+                            ) => this.editTask(id, name, description, completed, startTime, endTime)}
                             removeTask={(id: number) => this.removeTask(id)}
                         />
                     </div>
@@ -83,7 +109,7 @@ export default class Dashboard extends React.Component<Props, State> {
                     ? <AddTaskModal
                         closeAddTaskModal={() => this.toggleAddTaskModalActive(false)}
                         createTask={(name: string, description: string, startTime: Date, endTime: Date) =>
-                                this.createTask(name, description, startTime, endTime)
+                            this.createTask(name, description, startTime, endTime)
                         }
                     />
                     : null

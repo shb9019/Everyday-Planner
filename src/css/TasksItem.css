@@ -25,3 +25,7 @@
 .delete-icon:hover {
     cursor: pointer;
 }
+
+.edit-name-field {
+    margin-top: 10px;
+}

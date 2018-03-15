@@ -8,15 +8,20 @@ export interface Props {
     name: string;
     description: string;
     completed: boolean;
-    startTime?: Date;
-    endTime?: Date;
+    startTime: Date;
+    endTime: Date;
     changeCompletedStatus: Function;
+    editTask: Function;
     removeTask: Function;
 }
 
 export interface State {
     toggle: boolean;
     edit: boolean;
+    name: string;
+    description: string;
+    startTime: Date;
+    endTime: Date;
 }
 
 export default class TasksLists extends React.Component<Props, State> {
@@ -24,7 +29,11 @@ export default class TasksLists extends React.Component<Props, State> {
         super(props);
         this.state = {
             toggle: false,
-            edit: false
+            edit: false,
+            name: this.props.name,
+            description: this.props.description,
+            startTime: this.props.startTime,
+            endTime: this.props.endTime
         };
     }
 
@@ -102,9 +111,12 @@ export default class TasksLists extends React.Component<Props, State> {
                                 <FontAwesome className="fa fa-times"/>
                             </Button>
                         </Col>
-                        <Col xs={7} md={7} lg={7}>
+                        <Col xs={8} md={8} lg={8}>
                             <FormControl
                                 type="text"
+                                value={this.state.name}
+                                onChange={(e) => this.setState({name: (e.target as HTMLInputElement).value })}
+                                className={'edit-name-field'}
                                 placeholder="Task Name"
                             />
                         </Col>
@@ -112,18 +124,63 @@ export default class TasksLists extends React.Component<Props, State> {
                             <FontAwesome
                                 className="fa fa-save delete-icon"
                                 onClick={(e) => {
+                                    this.props.editTask(
+                                        this.state.name,
+                                        this.state.description,
+                                        this.state.startTime,
+                                        this.state.endTime
+                                    );
+                                    this.toggleEditStatus(false);
                                     e.stopPropagation();
                                 }}
                             />
                         </Col>
                     </Row>
-                    {this.state.toggle
-                        ? <Row className="task-description">
-                            <Col xs={8} xsOffset={2} className={'text-center'}>
-                                {this.props.description}
-                            </Col>
-                        </Row>
-                        : null}
+                    <Row className="task-description">
+                        <Col xs={8} xsOffset={2} className={'text-center'}>
+                            <FormControl
+                                componentClass="textarea"
+                                value={this.state.description}
+                                onChange={(e) => this.setState({description: (e.target as HTMLInputElement).value })}
+                                rows={5}
+                                placeholder="Describe your task here"
+                            />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={3} xsOffset={1}>
+                            <h5>Start Time</h5>
+                        </Col>
+                        <Col xs={6} className={'text-center'}>
+                            <FormControl
+                                type="datetime-local"
+                                value={this.state.startTime.toISOString().slice(0, -1)}
+                                onChange={
+                                    (e) =>
+                                        this.setState(
+                                            { startTime: new Date((e.target as HTMLInputElement).value + 'Z') }
+                                        )
+                                }
+                            />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={3} xsOffset={1}>
+                            <h5>End Time</h5>
+                        </Col>
+                        <Col xs={6} className={'text-center'}>
+                            <FormControl
+                                type="datetime-local"
+                                value={this.state.endTime.toISOString().slice(0, -1)}
+                                onChange={
+                                    (e) =>
+                                        this.setState(
+                                            { endTime: new Date((e.target as HTMLInputElement).value + 'Z') }
+                                        )
+                                }
+                            />
+                        </Col>
+                    </Row>
                 </ListGroupItem>
             );
         }

@@ -64,7 +64,7 @@ export default class AddTaskModal extends React.Component<Props, State> {
                                 onChange={
                                     (e) =>
                                         this.setState(
-                                            { startTime: new Date((e.target as HTMLInputElement).value) }
+                                            { startTime: new Date((e.target as HTMLInputElement).value + 'Z') }
                                         )
                                 }
                             />
@@ -75,7 +75,7 @@ export default class AddTaskModal extends React.Component<Props, State> {
                                 type="datetime-local"
                                 onChange={
                                     (e) => this.setState(
-                                        { endTime: new Date((e.target as HTMLInputElement).value) }
+                                        { endTime: new Date((e.target as HTMLInputElement).value + 'Z') }
                                     )
                                 }
                             />
